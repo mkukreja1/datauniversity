@@ -15,14 +15,14 @@ for line in sys.stdin:
     if not last_cars:
         last_cars = cars
     # if they're the same, log it
-    if cars.strip() == last_cars.strip():
+    if cars == last_cars:
         cars_count += count
     else:
         result = [last_cars, cars_count]
 		
-        if (cars_count > 0 and (last_cars=='BMW' or last_cars=='Mercedes-Benz' or last_cars=='Audi' or last_cars=='Ferrari' or last_cars=='Lexus')): 
+        if (cars_count > 1 and (last_cars=='BMW' or last_cars=='Mercedes-Benz' or last_cars=='Audi' or last_cars=='Ferrari' or last_cars=='Lexus')): 
            print("|".join(str(v) for v in result))
         last_cars = cars
         cars_count = 1
 
-print("|".join(str(v) for v in [last_cars, cars_count]))
+
