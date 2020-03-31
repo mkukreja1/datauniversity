@@ -20,7 +20,7 @@ for line in sys.stdin:
     else:
         result = [last_cars, cars_count]
 		
-        if (cars_count > 0 and (last_cars=='BMW' or last_cars=='Mercedes-Benz' or last_cars=='Audi' or last_cars=='Ferrari' or last_cars=='Lexus')): 
+        if cars_count > 0: 
            print("|".join(str(v) for v in result))
         last_cars = cars
         cars_count = 1

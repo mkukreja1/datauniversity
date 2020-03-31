@@ -8,5 +8,6 @@ for line in infile:
     line = line.strip()
     unpacked = line.split("|")
     name, city, postalcode, country, maritalstatus, car  = line.split("|")
-    results = [car+'-'+country, "1"]
-    print("|".join(results))
+    if (country == 'Australia'):
+       results = [car+'-'+country, "1"]
+       print("|".join(results))
