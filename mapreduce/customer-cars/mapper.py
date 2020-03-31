@@ -4,9 +4,12 @@ import sys
 
 infile= sys.stdin
 
+# Remove the header line
+#next(infile)
+
 for line in infile:
     line = line.strip()
     unpacked = line.split("|")
     name, city, postalcode, country, maritalstatus, car  = line.split("|")
     results = [car, "1"]
-    print("|".join(results))
+    print("\t".join(results))

@@ -25,4 +25,3 @@ for line in sys.stdin:
         last_cars = cars
         cars_count = 1
 
-print("|".join(str(v) for v in [last_cars, cars_count]))
