@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet rel="stylesheet" href="test.css" ?>
+<records>
+  <record>
+    <Name>Gates,Bill</Name>
+    <major>ICS</major>
+    <standing>Senior</standing>
+    <hw1>81</hw1>
+    <hw2>91</hw2>
+    <hw3>97.2</hw3>
+    <exam1>95.4</exam1>
+    <hw4>0</hw4>
+    <hw5>96.2</hw5>
+    <exam2>98.2</exam2>
+  </record>
+  <record>
+    <Name>Doe,Jane</Name>
+    <major>CENT</major>
+    <standing>Freshman</standing>
+    <hw1>88.5</hw1>
+    <hw2>91.2</hw2>
+    <hw3>92.6</hw3>
+    <exam1>89.5</exam1>
+    <hw4>97.3</hw4>
+    <hw5>94.2</hw5>
+    <exam2>92.3</exam2>
+  </record>
+  <record>
+    <Name>Raymond,Eric</Name>
+    <major>MATH</major>
+    <standing>Junior</standing>
+    <hw1>0</hw1>
+    <hw2>98.5</hw2>
+    <hw3>96.2</hw3>
+    <exam1>95.2</exam1>
+    <hw4>93.8</hw4>
+    <hw5>95.2</hw5>
+    <exam2>96.4</exam2>
+  </record>
+</records>
