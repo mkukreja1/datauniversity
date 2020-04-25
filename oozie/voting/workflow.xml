@@ -8,8 +8,8 @@
                                 <delete path="${outputDir}"/>
                         </prepare>
                         <streaming>
-                                <mapper>python mapper.py</mapper>
-                                <reducer>python reducer.py</reducer>
+                                <mapper>python voting_mapper.py</mapper>
+                                <reducer>python voting_reducer.py</reducer>
                         </streaming>
                         <configuration>
                                 <property>
@@ -29,8 +29,8 @@
                                         <value>1</value>
                                 </property>
                         </configuration>
-                        <file>${appPath}/mapper.py#mapper.py</file>
-                        <file>${appPath}/reducer.py#reducer.py</file>
+                        <file>${appPath}/voting_mapper.py#voting_mapper.py</file>
+                        <file>${appPath}/voting_reducer.py#voting_reducer.py</file>
                 </map-reduce>
                 <ok to="end"/>
                 <error to="killJobAction"/>
