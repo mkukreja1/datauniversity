@@ -1,80 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<workflow-app
-    xmlns="uri:oozie:workflow:0.5"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="uri:oozie:workflow:0.5 http://oozie.apache.org/schemas/workflow-0.5
-    uri:oozie:hive-action:0.5  http://oozie.apache.org/schemas/hive-action-0.5
-    uri:oozie:email-action:0.2 http://oozie.apache.org/schemas/email-action-0.2
-    uri:oozie:sqoop-action:0.4 http://oozie.apache.org/schemas/sqoop-action-0.4
-    uri:oozie:shell-action:0.3 http://oozie.apache.org/schemas/shell-action-0.3
-    uri:oozie:ssh-action:0.2 http://oozie.apache.org/schemas/ssh-action-0.2
-    uri:oozie:sla:0.2 http://oozie.apache.org/schemas/sla-0.2"
-    name="Student Data Pipeline Workflow"
->
-     <global>
-             <job-tracker>${jobTracker}</job-tracker>
-             <name-node>${nameNode}</name-node>
-             <configuration>
-                 <property>
-                     <name>mapreduce.job.queue.name</name>
-                     <value>${queueName}</value>
-                 </property>
-             </configuration>
-    </global>
-
+<workflow-app name="Airlines" xmlns="uri:oozie:workflow:0.1">
 
      <start to="hdfsCommands"/>
      
      <action name="hdfsCommands">
          <fs>
-             <delete path="${hdfs_dir_raw_data_old}/*"/>
-             <move source="${hdfs_dir_raw_data}" target="${hdfs_dir_raw_data_old}"/>
+             <delete path="${hdfs_dir_raw_data}"/>
          </fs>
-         <ok to="import-raw-data"/>
+         <ok to="sqoopCommands"/>
          <error to="end"/>
      </action>
 
-    <action name="import-raw-data">
-             <sqoop xmlns="uri:oozie:sqoop-action:0.4">
+     <action name="sqoopCommands">
+        <sqoop xmlns="uri:oozie:sqoop-action:0.2">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <command>sqoop import --connect ${db_string} --username ${db_username} --password ${db_password} --table ${db_table} --target-dir ${hdfs_dir_raw_data} --split-by ${db_split}</command>
+        </sqoop>
+            <ok to="hiveCommands"/>
+            <error to="killJobAction"/>
+     </action>
 
-                                <arg>import</arg>
-                                <arg>--connect</arg>
-                                <arg>${db_string}</arg>
-                                <arg>--table</arg>
-                                <arg>${db_table}</arg>
-                                <arg>--columns</arg>
-                                <arg>${db_columns}</arg>
-                                <arg>--username</arg>
-                                <arg>${db_username}</arg>
-                                <arg>--password</arg>
-                                <arg>${db_password}</arg>
-                                <arg>--split-by</arg>
-                                <arg>FlightNum</arg>
-                                <arg>--target-dir</arg>
-                                <arg>${hdfs_dir_raw_data}</arg>
-             </sqoop>
-             <ok to="hive-ext-tables"/>
-             <error to="fail"/>
-    </action>
+     <action name="hiveCommands">
+        <hive xmlns="uri:oozie:hive-action:0.5">
+            <job-tracker>${jobTracker}</job-tracker>
+            <name-node>${nameNode}</name-node>
+            <job-xml>hive-site.xml</job-xml>
+            <script>create_ext_tables.hql</script>
+            <param>hive_db_name=${hive_db_name}</param>
+            <param>hive_ext_table_raw_data=${hive_ext_table_raw_data}</param>
+			<param>hdfs_dir_raw_data=${hdfs_dir_raw_data}</param>
+        </hive>
+            <ok to="end"/>
+            <error to="killJobAction"/>
+     </action>
 
-    <action name="hive-ext-tables">
-      <hive xmlns="uri:oozie:hive-action:0.5">
-         <job-xml>hive-site.xml</job-xml>
-         <script>create_ext_tables.hql</script>
-         <param>hive_db_name=${hive_db_name}</param>
-         <param>hive_ext_table_raw_data=${hive_ext_table_raw_data}</param>
-         <param>hdfs_dir_raw_data=${hdfs_dir_raw_data}</param>
-      </hive>
-      <ok to="hive-etl-tables"/>
-      <error to="fail"/>
-    </action>
-    
-
-    <kill name="fail">
-        <message>Data center workflow failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
-    </kill>
-
-    <end name="end"/>
-
+     <kill name="killJobAction">
+            <message>"Killed job due to error: ${wf:errorMessage(wf:lastErrorNode())}"</message>
+     </kill>
+     <end name="end" />
 </workflow-app>
+
 

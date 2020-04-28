@@ -1,8 +1,14 @@
-<coordinator-app name="Student_Data_Pipeline_Coord" frequency="${frequency}" start="${startTime}" end="${endTime}" timezone="${timeZone}" xmlns="uri:oozie:coordinator:0.1">
+<coordinator-app name="Airline_Data_Pipeline_Coord" frequency="${frequency}" start="${startTime}" end="${endTime}" timezone="${timeZone}" xmlns="uri:oozie:coordinator:0.1">
    <action>
          <workflow>
                   <app-path>${workflowRoot}/workflow.xml</app-path>
          </workflow>
+		 <configuration>
+                  <property>
+                       <name>ingestDate</name>
+                       <value>${coord:formatTime(coord:dateOffset(coord:nominalTime(), -1,'DAY'), "yyyy-MM-dd")}</value>
+                  </property>
+         </configuration>
   </action>
 </coordinator-app>
 
