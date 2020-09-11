@@ -1,3 +1,1 @@
-{"username": "tom","ip": "172.17.29.4"},
-{"username": "james","ip": "172.17.29.1"},
-{"username": "jill","ip": "10.44.40.18"}
+[{"username": "tom","ip": "172.17.29.4"},{"username": "james","ip": "172.17.29.1"},{"username": "jill","ip": "10.44.40.18"}]
